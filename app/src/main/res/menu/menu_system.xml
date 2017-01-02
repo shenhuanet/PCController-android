@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/system_menu_item_shutdown"
+        android:title="关机" />
+
+    <item
+        android:id="@+id/system_menu_item_restart"
+        android:title="重启" />
+
+    <item
+        android:id="@+id/system_menu_item_sign_out"
+        android:title="注销" />
+
+    <item
+        android:id="@+id/system_menu_item_sleep"
+        android:title="休眠" />
+
+    <item
+        android:id="@+id/system_menu_item_wake"
+        android:title="唤醒" />
+
+    <item
+        android:id="@+id/system_menu_item_display"
+        android:title="进入屏保" />
+
+    <item
+        android:id="@+id/system_menu_item_close_display"
+        android:title="关闭显示器" />
+
+</menu>
