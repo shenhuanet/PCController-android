@@ -71,13 +71,16 @@ public class SplashFragment extends Fragment {
 
     @OnClick(R.id.btn_connect)
     void click(View view) {
+        App app = (App) getActivity().getApplication();
+        app.setHost(mEditText.getText().toString());
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("正在连接...");
         dialog.show();
-        SocketUtils.getInstance().connect(mEditText.getText().toString(), 118, true, new SocketCallback() {
+        SocketUtils.getInstance().connect(app.getHost(), 118, true, new SocketCallback() {
             @Override
             public void onSuccess(String msg) {
                 dialog.dismiss();
+                Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).replace(new MainFragment());
             }
 

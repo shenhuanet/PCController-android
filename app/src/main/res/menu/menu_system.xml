@@ -2,31 +2,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/system_menu_item_lock"
+        android:title="@string/string_lock" />
+
+    <item
         android:id="@+id/system_menu_item_shutdown"
-        android:title="关机" />
+        android:title="@string/string_shutdown" />
 
     <item
         android:id="@+id/system_menu_item_restart"
-        android:title="重启" />
+        android:title="@string/string_restart" />
 
     <item
-        android:id="@+id/system_menu_item_sign_out"
-        android:title="注销" />
+        android:id="@+id/system_menu_item_logout"
+        android:title="@string/string_logout" />
 
     <item
         android:id="@+id/system_menu_item_sleep"
-        android:title="休眠" />
+        android:title="@string/string_sleep" />
 
     <item
-        android:id="@+id/system_menu_item_wake"
-        android:title="唤醒" />
-
-    <item
-        android:id="@+id/system_menu_item_display"
-        android:title="进入屏保" />
+        android:id="@+id/system_menu_item_awake"
+        android:title="@string/string_awake" />
 
     <item
         android:id="@+id/system_menu_item_close_display"
-        android:title="关闭显示器" />
+        android:title="@string/string_close_display" />
+
+    <item
+        android:id="@+id/system_menu_item_screen_savers"
+        android:title="@string/string_screen_savers" />
+
+    <item
+        android:id="@+id/system_menu_item_get_tasks"
+        android:title="@string/string_get_tasks" />
+
+    <item
+        android:id="@+id/system_menu_item_dis_connect"
+        android:title="@string/string_dis_connect" />
 
 </menu>
