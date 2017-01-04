@@ -35,4 +35,7 @@ public class StringUtils {
     public static final String SYSTEM_GET_TASKS = "#get_tasks#";
     public static final String SYSTEM_KILL_TASK = "#kill_task#";
 
+    public static final String SYSTEM_GET_VOLUME = "#get_system_volume#";
+    public static final String SYSTEM_SET_VOLUME = "#set_system_volume#";
+
 }

@@ -54,13 +54,10 @@ public class TouchView extends View {
                 y = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                System.out.println("shenhua sout:x: " + (event.getX() - x));
-                System.out.println("shenhua sout:y: " + (event.getY() - y));
+                //System.out.println("shenhua sout:x: " + (event.getX() - x));
+                //System.out.println("shenhua sout:y: " + (event.getY() - y));
                 if (listener != null) {
-//                    (event.getX() - x)
-//                    (event.getY() - y)
-//                    网络操作.发送端口数据(this.IP, 119, new StringBuilder().append(new StringBuilder().append("横").append(转换操作.到文本(paramInt1 - paramInt3)).toString()).append("纵").toString() + 转换操作.到文本(paramInt2 - paramInt4));
-//                    网络操作.断开端口连接();
+                    listener.onMove((int) (x - event.getX()), (int) (y - event.getY()));
                 }
                 break;
             case MotionEvent.ACTION_UP:

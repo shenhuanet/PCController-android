@@ -13,7 +13,7 @@
     <string name="string_dis_connect">断开连接</string>
     <string name="string_setting">设置</string>
     <string name="string_send">发送</string>
-    <string name="string_mouse">鼠标灵敏度：</string>
-    <string name="string_volume">系统音量：</string>
+    <string name="string_mouse">鼠标灵敏度：%d</string>
+    <string name="string_volume">系统音量：%d</string>
     <string name="string_sendtext_tag">发送文本</string>
 </resources>

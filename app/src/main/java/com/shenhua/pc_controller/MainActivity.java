@@ -19,8 +19,8 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         setupActionBar(toolbar, false);
 
-//        replace(new SplashFragment());
-        replace(new MainFragment());
+        replace(new SplashFragment());
+        //replace(new MainFragment());
     }
 
     public void replace(Fragment fragment) {
@@ -29,4 +29,15 @@ public class MainActivity extends BaseActivity {
                 .commit();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        showToast(getResources().getString(R.string.app_name) + "正在后台运行");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SocketUtils.getInstance().connect(((App) getApplication()).getHost(), 118, false, null);
+    }
 }

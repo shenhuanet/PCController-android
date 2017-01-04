@@ -74,13 +74,16 @@ public class SocketUtils {
                     socket.close();
                     bufferedReader.close();
                     printWriter.close();
+                    if (callback == null) return;
                     callback.obtainMessage(SUCCESS, response).sendToTarget();
                 } catch (SocketTimeoutException e) {
                     e.printStackTrace();
+                    if (callback == null) return;
                     callback.obtainMessage(FAILED, (connect ? "Connect" : "Disconnect") + " Time out.")
                             .sendToTarget();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if (callback == null) return;
                     callback.obtainMessage(FAILED, "An error in the " + (connect ? "connect" : "disconnect"))
                             .sendToTarget();
                 }
@@ -88,7 +91,7 @@ public class SocketUtils {
         });
     }
 
-    public void communicate(final String action) {
+    public void communicate(final String action, final SocketCallback callback) {
         send(new Runnable() {
             @Override
             public void run() {
@@ -107,8 +110,42 @@ public class SocketUtils {
                     socket.close();
                     bufferedReader.close();
                     printWriter.close();
+                    if (callback != null) {
+                        callback.obtainMessage(SUCCESS, response).sendToTarget();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if (callback != null) callback.obtainMessage(FAILED, "error").sendToTarget();
+                }
+            }
+        });
+    }
+
+    public void communicate(final String action, final int port, final SocketCallback callback) {
+        send(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket(host, port);
+                    socket.setSoTimeout(COMMUNICATE_TIMEOUT);
+                    BufferedReader bufferedReader = getBufferedReader(socket);
+                    PrintWriter printWriter = getPrintWriter(socket);
+                    printWriter.println(action);
+                    String response = "";
+                    for (; ; ) {
+                        String str2 = bufferedReader.readLine();
+                        if ((str2 == null)) break;
+                        response = response + str2;
+                    }
+                    socket.close();
+                    bufferedReader.close();
+                    printWriter.close();
+                    if (callback != null) {
+                        callback.obtainMessage(SUCCESS, response).sendToTarget();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    if (callback != null) callback.obtainMessage(FAILED, "error").sendToTarget();
                 }
             }
         });

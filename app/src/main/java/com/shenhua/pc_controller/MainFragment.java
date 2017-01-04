@@ -7,12 +7,16 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -20,6 +24,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_LEFT;
+import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_RIGHT;
+import static com.shenhua.pc_controller.StringUtils.SYSTEM_GET_VOLUME;
+import static com.shenhua.pc_controller.StringUtils.SYSTEM_SET_VOLUME;
 import static com.shenhua.pc_controller.StringUtils.SYSTEM_SHUTDOWN;
 
 /**
@@ -53,11 +60,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onMove(int dx, int dy) {
 //                port=119
+                //System.out.println("shenhua sout:---------->" + "横" + dx + "" + "纵" + dy);
+                SocketUtils.getInstance().communicate("横" + dx + "" + "纵" + dy, 119, null);
             }
 
             @Override
             public void onClick() {
-                SocketUtils.getInstance().communicate(ACTION_CLICK_LEFT);
+                SocketUtils.getInstance().communicate(ACTION_CLICK_LEFT, null);
             }
         });
         mTouchView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -65,7 +74,7 @@ public class MainFragment extends Fragment {
             public boolean onLongClick(View view) {
                 Vibrator vibrator = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
                 vibrator.vibrate(80);
-//                SocketUtils.getInstance().communicate(ACTION_CLICK_RIGHT);
+                SocketUtils.getInstance().communicate(ACTION_CLICK_RIGHT, null);
                 return true;
             }
         });
@@ -130,7 +139,7 @@ public class MainFragment extends Fragment {
                 // SocketUtils.getInstance().communicate("");
                 break;
             case R.id.system_menu_item_shutdown:
-                SocketUtils.getInstance().communicate(SYSTEM_SHUTDOWN);
+                SocketUtils.getInstance().communicate(SYSTEM_SHUTDOWN, null);
                 break;
             case R.id.system_menu_item_restart:
                 // SocketUtils.getInstance().communicate("");
@@ -170,11 +179,52 @@ public class MainFragment extends Fragment {
                 });
                 break;
             case R.id.setting:
-                BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                dialog.setContentView(R.layout.bottomsheet_setting);
-                dialog.show();
+                showSettingDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSettingDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+        dialog.setContentView(R.layout.bottomsheet_setting);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        final AppCompatSeekBar seekBar = (AppCompatSeekBar) window.findViewById(R.id.seek_volume);
+        final TextView volumeTv = (TextView) window.findViewById(R.id.tv_volume);
+        SocketUtils.getInstance().communicate(SYSTEM_GET_VOLUME, new SocketCallback() {
+            @Override
+            public void onSuccess(String msg) {
+                seekBar.setProgress(Integer.valueOf(msg));
+                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), Integer.valueOf(msg)));
+            }
+
+            @Override
+            public void onFailed(int errorCode, String msg) {
+                Toast.makeText(getActivity(), "系统音量获取失败", Toast.LENGTH_SHORT).show();
+                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), 10));
+                seekBar.setProgress(10);
+            }
+        });
+        dialog.show();
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                SocketUtils.getInstance().communicate(SYSTEM_SET_VOLUME + i, null);
+                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), Integer.valueOf(i)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 }
