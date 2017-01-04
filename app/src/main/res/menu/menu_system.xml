@@ -1,44 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/system_menu_item_lock"
-        android:title="@string/string_lock" />
+        android:id="@+id/setting"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/string_setting"
+        app:showAsAction="always" />
 
-    <item
-        android:id="@+id/system_menu_item_shutdown"
-        android:title="@string/string_shutdown" />
+    <group android:id="@+id/system_menus">
 
-    <item
-        android:id="@+id/system_menu_item_restart"
-        android:title="@string/string_restart" />
+        <item
+            android:id="@+id/system_menu_item_lock"
+            android:title="@string/string_lock" />
 
-    <item
-        android:id="@+id/system_menu_item_logout"
-        android:title="@string/string_logout" />
+        <item
+            android:id="@+id/system_menu_item_shutdown"
+            android:title="@string/string_shutdown" />
 
-    <item
-        android:id="@+id/system_menu_item_sleep"
-        android:title="@string/string_sleep" />
+        <item
+            android:id="@+id/system_menu_item_restart"
+            android:title="@string/string_restart" />
 
-    <item
-        android:id="@+id/system_menu_item_awake"
-        android:title="@string/string_awake" />
+        <item
+            android:id="@+id/system_menu_item_logout"
+            android:title="@string/string_logout" />
 
-    <item
-        android:id="@+id/system_menu_item_close_display"
-        android:title="@string/string_close_display" />
+        <item
+            android:id="@+id/system_menu_item_sleep"
+            android:title="@string/string_sleep" />
 
-    <item
-        android:id="@+id/system_menu_item_screen_savers"
-        android:title="@string/string_screen_savers" />
+        <item
+            android:id="@+id/system_menu_item_awake"
+            android:title="@string/string_awake" />
 
-    <item
-        android:id="@+id/system_menu_item_get_tasks"
-        android:title="@string/string_get_tasks" />
+        <item
+            android:id="@+id/system_menu_item_close_display"
+            android:title="@string/string_close_display" />
 
-    <item
-        android:id="@+id/system_menu_item_dis_connect"
-        android:title="@string/string_dis_connect" />
+        <item
+            android:id="@+id/system_menu_item_screen_savers"
+            android:title="@string/string_screen_savers" />
+
+        <item
+            android:id="@+id/system_menu_item_get_tasks"
+            android:title="@string/string_get_tasks" />
+
+        <item
+            android:id="@+id/system_menu_item_dis_connect"
+            android:title="@string/string_dis_connect" />
+
+    </group>
 
 </menu>

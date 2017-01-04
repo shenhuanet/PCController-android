@@ -1,8 +1,11 @@
 package com.shenhua.pc_controller;
 
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,9 +17,9 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_LEFT;
-import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_RIGHT;
 import static com.shenhua.pc_controller.StringUtils.SYSTEM_SHUTDOWN;
 
 /**
@@ -60,11 +63,53 @@ public class MainFragment extends Fragment {
         mTouchView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                SocketUtils.getInstance().communicate(ACTION_CLICK_RIGHT);
-                // 长按时震动
+                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
+                vibrator.vibrate(80);
+//                SocketUtils.getInstance().communicate(ACTION_CLICK_RIGHT);
                 return true;
             }
         });
+    }
+
+    @OnClick({R.id.btn_copy, R.id.btn_file, R.id.btn_esc, R.id.btn_send})
+    void clicks(View v) {
+        switch (v.getId()) {
+            case R.id.btn_copy:
+
+                break;
+            case R.id.btn_file:
+                ((MainActivity) getActivity()).showToast("功能未实现");
+                break;
+            case R.id.btn_esc:
+
+                break;
+            case R.id.btn_send:
+                BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                dialog.setContentView(R.layout.bottomsheet_send_message);
+                dialog.show();
+                break;
+        }
+    }
+
+    @OnClick({R.id.btn_up, R.id.btn_down, R.id.btn_left, R.id.btn_right, R.id.btn_enter})
+    void orientationClicks(View v) {
+        switch (v.getId()) {
+            case R.id.btn_up:
+
+                break;
+            case R.id.btn_down:
+
+                break;
+            case R.id.btn_left:
+
+                break;
+            case R.id.btn_right:
+
+                break;
+            case R.id.btn_enter:
+
+                break;
+        }
     }
 
     @Override
@@ -123,6 +168,11 @@ public class MainFragment extends Fragment {
                         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
+            case R.id.setting:
+                BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                dialog.setContentView(R.layout.bottomsheet_setting);
+                dialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);

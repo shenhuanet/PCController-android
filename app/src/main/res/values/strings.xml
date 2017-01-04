@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PC-Controller</string>
+    <string name="title_system_tasks">任务管理器</string>
     <string name="string_lock">锁定</string>
     <string name="string_shutdown">关机</string>
     <string name="string_restart">重启</string>
@@ -10,4 +11,9 @@
     <string name="string_screen_savers">屏幕保护</string>
     <string name="string_get_tasks">查看系统进程</string>
     <string name="string_dis_connect">断开连接</string>
+    <string name="string_setting">设置</string>
+    <string name="string_send">发送</string>
+    <string name="string_mouse">鼠标灵敏度：</string>
+    <string name="string_volume">系统音量：</string>
+    <string name="string_sendtext_tag">发送文本</string>
 </resources>

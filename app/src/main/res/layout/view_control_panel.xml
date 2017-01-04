@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_primary" />
+
+        <ImageView
+            android:id="@+id/btn_enter"
+            style="@style/Item"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_enter" />
+
+        <ImageView
+            android:id="@+id/btn_up"
+            style="@style/Item"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/item_margin"
+            android:src="@drawable/ic_orientation" />
+
+        <ImageView
+            android:id="@+id/btn_down"
+            style="@style/Item"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/item_margin"
+            android:rotation="180"
+            android:src="@drawable/ic_orientation" />
+
+        <ImageView
+            android:id="@+id/btn_left"
+            style="@style/Item"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/item_margin"
+            android:rotation="270"
+            android:src="@drawable/ic_orientation" />
+
+        <ImageView
+            android:id="@+id/btn_right"
+            style="@style/Item"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/item_margin"
+            android:rotation="90"
+            android:src="@drawable/ic_orientation" />
+
+        <ImageView
+            android:id="@+id/btn_copy"
+            style="@style/Item"
+            android:layout_marginStart="@dimen/item_padding"
+            android:src="@drawable/ic_copy" />
+
+        <ImageView
+            android:id="@+id/btn_file"
+            style="@style/Item"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/item_padding"
+            android:src="@drawable/ic_file" />
+
+        <ImageView
+            android:id="@+id/btn_esc"
+            style="@style/Item"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/item_padding"
+            android:src="@drawable/ic_esc" />
+
+        <ImageView
+            android:id="@+id/btn_send"
+            style="@style/Item"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/item_padding"
+            android:src="@drawable/ic_send" />
+
+    </FrameLayout>
+
+</merge>

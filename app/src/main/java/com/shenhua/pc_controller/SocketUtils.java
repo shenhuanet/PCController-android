@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -74,9 +75,13 @@ public class SocketUtils {
                     bufferedReader.close();
                     printWriter.close();
                     callback.obtainMessage(SUCCESS, response).sendToTarget();
+                } catch (SocketTimeoutException e) {
+                    e.printStackTrace();
+                    callback.obtainMessage(FAILED, (connect ? "Connect" : "Disconnect") + " Time out.")
+                            .sendToTarget();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    callback.obtainMessage(SUCCESS, "An error in the " + (connect ? "connect" : "disconnect"))
+                    callback.obtainMessage(FAILED, "An error in the " + (connect ? "connect" : "disconnect"))
                             .sendToTarget();
                 }
             }
