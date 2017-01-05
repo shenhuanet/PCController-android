@@ -1,4 +1,4 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.utils;
 
 /**
  * Created by Shenhua on 1/1/2017.

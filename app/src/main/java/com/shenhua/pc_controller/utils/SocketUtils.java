@@ -1,4 +1,4 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.utils;
 
 import android.text.TextUtils;
 
@@ -13,10 +13,8 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.shenhua.pc_controller.SocketCallback.FAILED;
-import static com.shenhua.pc_controller.SocketCallback.SUCCESS;
-import static com.shenhua.pc_controller.StringUtils.ACTION_CONNECT;
-import static com.shenhua.pc_controller.StringUtils.ACTION_DIS_CONNECT;
+import static com.shenhua.pc_controller.utils.StringUtils.ACTION_CONNECT;
+import static com.shenhua.pc_controller.utils.StringUtils.ACTION_DIS_CONNECT;
 
 /**
  * Created by Shenhua on 1/1/2017.
@@ -53,7 +51,7 @@ public class SocketUtils {
      */
     public void connect(final String host, final int port, final boolean connect, final SocketCallback callback) {
         if (TextUtils.isEmpty(host) || port <= 0)
-            callback.obtainMessage(FAILED, "Please check the host and port is right!").sendToTarget();
+            callback.obtainMessage(SocketCallback.FAILED, "Please check the host and port is right!").sendToTarget();
         this.host = host;
         this.port = port;
         send(new Runnable() {
@@ -75,16 +73,16 @@ public class SocketUtils {
                     bufferedReader.close();
                     printWriter.close();
                     if (callback == null) return;
-                    callback.obtainMessage(SUCCESS, response).sendToTarget();
+                    callback.obtainMessage(SocketCallback.SUCCESS, response).sendToTarget();
                 } catch (SocketTimeoutException e) {
                     e.printStackTrace();
                     if (callback == null) return;
-                    callback.obtainMessage(FAILED, (connect ? "Connect" : "Disconnect") + " Time out.")
+                    callback.obtainMessage(SocketCallback.FAILED, (connect ? "Connect" : "Disconnect") + " Time out.")
                             .sendToTarget();
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (callback == null) return;
-                    callback.obtainMessage(FAILED, "An error in the " + (connect ? "connect" : "disconnect"))
+                    callback.obtainMessage(SocketCallback.FAILED, "An error in the " + (connect ? "connect" : "disconnect"))
                             .sendToTarget();
                 }
             }
@@ -111,11 +109,11 @@ public class SocketUtils {
                     bufferedReader.close();
                     printWriter.close();
                     if (callback != null) {
-                        callback.obtainMessage(SUCCESS, response).sendToTarget();
+                        callback.obtainMessage(SocketCallback.SUCCESS, response).sendToTarget();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null) callback.obtainMessage(FAILED, "error").sendToTarget();
+                    if (callback != null) callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
                 }
             }
         });
@@ -141,11 +139,11 @@ public class SocketUtils {
                     bufferedReader.close();
                     printWriter.close();
                     if (callback != null) {
-                        callback.obtainMessage(SUCCESS, response).sendToTarget();
+                        callback.obtainMessage(SocketCallback.SUCCESS, response).sendToTarget();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null) callback.obtainMessage(FAILED, "error").sendToTarget();
+                    if (callback != null) callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
                 }
             }
         });

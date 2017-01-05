@@ -1,8 +1,11 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+
+import com.shenhua.pc_controller.R;
+import com.shenhua.pc_controller.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

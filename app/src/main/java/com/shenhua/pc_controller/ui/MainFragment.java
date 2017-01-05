@@ -1,33 +1,34 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.ui;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.shenhua.pc_controller.App;
+import com.shenhua.pc_controller.R;
+import com.shenhua.pc_controller.utils.SocketCallback;
+import com.shenhua.pc_controller.utils.SocketUtils;
+import com.shenhua.pc_controller.widget.SendMessageDialog;
+import com.shenhua.pc_controller.widget.SettingDialog;
+import com.shenhua.pc_controller.widget.TouchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_LEFT;
-import static com.shenhua.pc_controller.StringUtils.ACTION_CLICK_RIGHT;
-import static com.shenhua.pc_controller.StringUtils.SYSTEM_GET_VOLUME;
-import static com.shenhua.pc_controller.StringUtils.SYSTEM_SET_VOLUME;
-import static com.shenhua.pc_controller.StringUtils.SYSTEM_SHUTDOWN;
+import static com.shenhua.pc_controller.utils.StringUtils.ACTION_CLICK_LEFT;
+import static com.shenhua.pc_controller.utils.StringUtils.ACTION_CLICK_RIGHT;
+import static com.shenhua.pc_controller.utils.StringUtils.SYSTEM_SHUTDOWN;
 
 /**
  * Created by Shenhua on 1/1/2017.
@@ -93,9 +94,7 @@ public class MainFragment extends Fragment {
 
                 break;
             case R.id.btn_send:
-                BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                dialog.setContentView(R.layout.bottomsheet_send_message);
-                dialog.show();
+                new SendMessageDialog(getActivity(), R.layout.bottomsheet_send_message).show();
                 break;
         }
     }
@@ -104,6 +103,7 @@ public class MainFragment extends Fragment {
     void orientationClicks(View v) {
         switch (v.getId()) {
             case R.id.btn_up:
+//                BaseAlertDialog dialog = new BaseAlertDialog(getContext()).show();
 
                 break;
             case R.id.btn_down:
@@ -179,52 +179,9 @@ public class MainFragment extends Fragment {
                 });
                 break;
             case R.id.setting:
-                showSettingDialog();
+                new SettingDialog(getActivity(), R.layout.bottomsheet_setting).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showSettingDialog() {
-        BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        dialog.setContentView(R.layout.bottomsheet_setting);
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-        final AppCompatSeekBar seekBar = (AppCompatSeekBar) window.findViewById(R.id.seek_volume);
-        final TextView volumeTv = (TextView) window.findViewById(R.id.tv_volume);
-        SocketUtils.getInstance().communicate(SYSTEM_GET_VOLUME, new SocketCallback() {
-            @Override
-            public void onSuccess(String msg) {
-                seekBar.setProgress(Integer.valueOf(msg));
-                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), Integer.valueOf(msg)));
-            }
-
-            @Override
-            public void onFailed(int errorCode, String msg) {
-                Toast.makeText(getActivity(), "系统音量获取失败", Toast.LENGTH_SHORT).show();
-                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), 10));
-                seekBar.setProgress(10);
-            }
-        });
-        dialog.show();
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                SocketUtils.getInstance().communicate(SYSTEM_SET_VOLUME + i, null);
-                volumeTv.setText(String.format(getResources().getString(R.string.string_volume), Integer.valueOf(i)));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 }

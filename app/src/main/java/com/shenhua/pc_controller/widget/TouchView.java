@@ -1,4 +1,4 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

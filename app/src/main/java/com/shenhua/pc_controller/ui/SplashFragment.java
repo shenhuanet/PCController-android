@@ -1,4 +1,4 @@
-package com.shenhua.pc_controller;
+package com.shenhua.pc_controller.ui;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.shenhua.pc_controller.App;
+import com.shenhua.pc_controller.R;
+import com.shenhua.pc_controller.utils.SocketCallback;
+import com.shenhua.pc_controller.utils.SocketUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

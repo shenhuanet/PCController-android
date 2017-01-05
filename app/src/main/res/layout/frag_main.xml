@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.shenhua.pc_controller.TouchView
+    <com.shenhua.pc_controller.widget.TouchView
         android:id="@+id/touchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
