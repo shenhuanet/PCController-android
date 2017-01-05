@@ -35,6 +35,10 @@
             android:title="@string/string_awake" />
 
         <item
+            android:id="@+id/system_menu_item_close_screen"
+            android:title="@string/string_close_screen" />
+
+        <item
             android:id="@+id/system_menu_item_close_display"
             android:title="@string/string_close_display" />
 

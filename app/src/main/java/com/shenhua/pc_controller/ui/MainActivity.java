@@ -1,5 +1,6 @@
 package com.shenhua.pc_controller.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -24,8 +25,8 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         setupActionBar(toolbar, false);
 
-//        replace(new SplashFragment());
-        replace(new MainFragment());
+        replace(new SplashFragment());
+//        replace(new MainFragment());
     }
 
     public void replace(Fragment fragment) {
@@ -38,12 +39,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        showToast(getResources().getString(R.string.app_name) + "正在后台运行");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SocketUtils.getInstance().connect(((App) getApplication()).getHost(), 118, false, null);
+        App app = (App) getApplication();
+        if (app.isConnect())
+            SocketUtils.getInstance().connect(((App) getApplication()).getHost(), 118, false, null);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentById(R.id.activity_main) instanceof MainFragment) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

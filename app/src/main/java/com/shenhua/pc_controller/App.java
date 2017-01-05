@@ -9,6 +9,7 @@ import android.app.Application;
 public class App extends Application {
 
     private String host;
+    private boolean isConnect = false;
 
     @Override
     public void onCreate() {
@@ -21,5 +22,13 @@ public class App extends Application {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public boolean isConnect() {
+        return isConnect;
+    }
+
+    public void setConnect(boolean connect) {
+        isConnect = connect;
     }
 }

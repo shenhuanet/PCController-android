@@ -30,6 +30,7 @@ public class StringUtils {
     public static final String SYSTEM_LOGOUT = "#logout#";
     public static final String SYSTEM_SLEEP = "#sleep#";
     public static final String SYSTEM_AWAKE = "#awake#";
+    public static final String SYSTEM_CLOSE_SCREEN = "#close_screen#";
     public static final String SYSTEM_CLOSE_DISPLAY = "#close_display#";
     public static final String SYSTEM_SCREEN_SAVERS = "#screen_savers#";
     public static final String SYSTEM_GET_TASKS = "#get_tasks#";

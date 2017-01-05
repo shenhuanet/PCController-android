@@ -50,6 +50,8 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        App app = (App) getActivity().getApplication();
+        app.setConnect(false);
         final String ip = mEditText.getText().toString();
         mConnectBtn.setEnabled(ip.length() != 0);
         mEditText.addTextChangedListener(new TextWatcher() {
@@ -87,6 +89,8 @@ public class SplashFragment extends Fragment {
                 dialog.dismiss();
                 Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).replace(new MainFragment());
+                App app = (App) getActivity().getApplication();
+                app.setConnect(true);
             }
 
             @Override

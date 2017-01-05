@@ -7,7 +7,8 @@
     <string name="string_logout">注销</string>
     <string name="string_sleep">休眠</string>
     <string name="string_awake">唤醒</string>
-    <string name="string_close_display">关闭显示器</string>
+    <string name="string_close_screen">关闭屏幕</string>
+    <string name="string_close_display">打开/关闭显示器</string>
     <string name="string_screen_savers">屏幕保护</string>
     <string name="string_get_tasks">查看系统进程</string>
     <string name="string_dis_connect">断开连接</string>
