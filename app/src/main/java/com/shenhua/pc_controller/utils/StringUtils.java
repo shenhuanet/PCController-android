@@ -20,9 +20,9 @@ public class StringUtils {
     public static final String ACTION_CTRL_ENTER = "#ctrl_enter#";
 
     public static final String EDIT_MESSAGE = "#message#";
-    public static final String EDIT_ALL = "#all#";
-    public static final String EDIT_COPY = "#copy#";
-    public static final String EDIT_PASTE = "#paste#";
+    public static final String EDIT_ALL = "#edit_all#";
+    public static final String EDIT_COPY = "#edit_copy#";
+    public static final String EDIT_PASTE = "#edit_paste#";
 
     public static final String SYSTEM_LOCK = "#lock#";
     public static final String SYSTEM_SHUTDOWN = "#shutdown#";

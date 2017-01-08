@@ -73,9 +73,8 @@ public class MainFragment extends Fragment {
             public void onMove(int dx, int dy) {
 //                port=119
                 //System.out.println("shenhua sout:---------->" + "横" + dx + "" + "纵" + dy);
-                SocketUtils.getInstance().communicate("横" + dx * 0.8 + "" + "纵" + dy * 0.8, 119, null);
+                SocketUtils.getInstance().communicate("横" + dx * 0.1 + "" + "纵" + dy * 0.1, 119, null);
             }
-
 
             @Override
             public void onClick() {
