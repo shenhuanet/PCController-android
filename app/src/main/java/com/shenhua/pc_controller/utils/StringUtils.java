@@ -6,6 +6,11 @@ package com.shenhua.pc_controller.utils;
  */
 public class StringUtils {
 
+    public static final int PORT_NORMAL = 118;
+    public static final int PORT_MOUSE = 118;
+    public static final int PORT_GANYING = 118;
+    public static final int PORT_IMAGE = 118;
+
     public static final String ACTION_CONNECT = "#request_connect#";
     public static final String ACTION_DIS_CONNECT = "#request_dis_connect#";
     public static final String ACTION_CLICK_LEFT = "#click_left#";

@@ -1,6 +1,8 @@
 package com.shenhua.pc_controller.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.shenhua.pc_controller.App;
@@ -50,6 +53,8 @@ public class MainFragment extends Fragment {
     private View rootView;
     @BindView(R.id.touchView)
     TouchView mTouchView;
+    @BindView(R.id.img_bg)
+    ImageView imageView;
 
     @Nullable
     @Override
@@ -96,6 +101,24 @@ public class MainFragment extends Fragment {
     void clicks(View v) {
         switch (v.getId()) {
             case R.id.btn_copy:
+                final ProgressDialog dialog = new ProgressDialog(getContext());
+                dialog.setMessage("Loading");
+                dialog.show();
+                SocketUtils.getInstance().readImage(new SocketCallback() {
+                    @Override
+                    public void onSuccess(Object msg) {
+                        dialog.dismiss();
+                        Bitmap bitmap = (Bitmap) msg;
+                        imageView.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onFailed(int errorCode, String msg) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
                 break;
             case R.id.btn_file:
@@ -167,8 +190,8 @@ public class MainFragment extends Fragment {
                     public void onPositiveButtonClick() {
                         SocketUtils.getInstance().communicate(SYSTEM_SHUTDOWN, new SocketCallback() {
                             @Override
-                            public void onSuccess(String msg) {
-                                if (msg.equals("already shutdown")) {
+                            public void onSuccess(Object msg) {
+                                if (msg.toString().equals("already shutdown")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -187,8 +210,8 @@ public class MainFragment extends Fragment {
                     public void onPositiveButtonClick() {
                         SocketUtils.getInstance().communicate(SYSTEM_RESTART, new SocketCallback() {
                             @Override
-                            public void onSuccess(String msg) {
-                                if (msg.equals("already restart")) {
+                            public void onSuccess(Object msg) {
+                                if (msg.toString().equals("already restart")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -207,8 +230,8 @@ public class MainFragment extends Fragment {
                     public void onPositiveButtonClick() {
                         SocketUtils.getInstance().communicate(SYSTEM_LOGOUT, new SocketCallback() {
                             @Override
-                            public void onSuccess(String msg) {
-                                if (msg.equals("already logout")) {
+                            public void onSuccess(Object msg) {
+                                if (msg.toString().equals("already logout")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -227,8 +250,8 @@ public class MainFragment extends Fragment {
                     public void onPositiveButtonClick() {
                         SocketUtils.getInstance().communicate(SYSTEM_SLEEP, new SocketCallback() {
                             @Override
-                            public void onSuccess(String msg) {
-                                if (msg.equals("already sleep")) {
+                            public void onSuccess(Object msg) {
+                                if (msg.toString().equals("already sleep")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -261,7 +284,7 @@ public class MainFragment extends Fragment {
                 String host = app.getHost();
                 SocketUtils.getInstance().connect(host, 118, false, new SocketCallback() {
                     @Override
-                    public void onSuccess(String msg) {
+                    public void onSuccess(Object msg) {
                         Toast.makeText(getActivity(), "已断开连接", Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).replace(new SplashFragment());
                         app.setConnect(false);

@@ -33,9 +33,9 @@ public class SettingDialog extends BaseBottomSheetDialog {
         final TextView volumeTv = (TextView) window.findViewById(R.id.tv_volume);
         SocketUtils.getInstance().communicate(SYSTEM_GET_VOLUME, new SocketCallback() {
             @Override
-            public void onSuccess(String msg) {
-                seekBar.setProgress(Integer.valueOf(msg));
-                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), Integer.valueOf(msg)));
+            public void onSuccess(Object msg) {
+                seekBar.setProgress(Integer.valueOf(msg.toString()));
+                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), Integer.valueOf(msg.toString())));
             }
 
             @Override

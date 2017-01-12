@@ -7,12 +7,12 @@ import android.os.Message;
  * Created by Shenhua on 1/1/2017.
  * e-mail shenhuanet@126.com
  */
-public abstract class SocketCallback extends Handler {
+public abstract class SocketCallback<T> extends Handler {
 
     public static final int SUCCESS = 1;
     public static final int FAILED = 0;
 
-    public abstract void onSuccess(String msg);
+    public abstract void onSuccess(T msg);
 
     public abstract void onFailed(int errorCode, String msg);
 
@@ -21,7 +21,7 @@ public abstract class SocketCallback extends Handler {
         switch (msg.what) {
             case SUCCESS:
                 // msg.obj是回调返对象
-                onSuccess(msg.obj.toString());
+                onSuccess((T) msg.obj);
                 break;
             case FAILED:
                 // msg.arg1是errorCode

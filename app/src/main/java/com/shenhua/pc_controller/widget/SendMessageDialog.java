@@ -37,9 +37,9 @@ public class SendMessageDialog extends BaseBottomSheetDialog implements View.OnC
             case R.id.btn_copy:
                 SocketUtils.getInstance().communicate(EDIT_COPY, new SocketCallback() {
                     @Override
-                    public void onSuccess(String msg) {
+                    public void onSuccess(Object msg) {
                         ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(msg);
+                        cm.setText(msg.toString());
                     }
 
                     @Override

@@ -1,10 +1,14 @@
 package com.shenhua.pc_controller.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -113,7 +117,8 @@ public class SocketUtils {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null) callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
+                    if (callback != null)
+                        callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
                 }
             }
         });
@@ -143,10 +148,52 @@ public class SocketUtils {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null) callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
+                    if (callback != null)
+                        callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
                 }
             }
         });
+    }
+
+    public void readImage(final SocketCallback callback) {
+        send(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket(host, 116);
+                    socket.setSoTimeout(COMMUNICATE_TIMEOUT);
+                    PrintWriter printWriter = getPrintWriter(socket);
+                    printWriter.println("#readImage#");
+                    InputStream inputStream = socket.getInputStream();
+                    if (inputStream.read() == -1) {
+                        callback.obtainMessage(SocketCallback.FAILED, "PC端剪切板中没有图片").sendToTarget();
+                        return;
+                    }
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    int byteRead;
+                    byte[] buffer = new byte[1024];
+                    while ((byteRead = inputStream.read(buffer)) != -1) {
+                        bos.write(buffer, 0, byteRead);
+                    }
+                    inputStream.close();
+                    bos.close();
+                    byte[] b = bos.toByteArray();
+                    System.out.println("shenhua sout:byte.size:" + b.length);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                    System.out.println("shenhua sout:bitmap:" + bitmap);
+                    callback.obtainMessage(SocketCallback.SUCCESS, bitmap).sendToTarget();
+                    socket.close();
+                    printWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callback.obtainMessage(SocketCallback.FAILED, "error").sendToTarget();
+                }
+            }
+        });
+    }
+
+    public void sendImage() {
+
     }
 
     private void send(Runnable runnable) {

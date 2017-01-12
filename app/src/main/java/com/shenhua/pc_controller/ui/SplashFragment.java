@@ -85,7 +85,7 @@ public class SplashFragment extends Fragment {
         dialog.show();
         SocketUtils.getInstance().connect(app.getHost(), 118, true, new SocketCallback() {
             @Override
-            public void onSuccess(String msg) {
+            public void onSuccess(Object msg) {
                 dialog.dismiss();
                 Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).replace(new MainFragment());
