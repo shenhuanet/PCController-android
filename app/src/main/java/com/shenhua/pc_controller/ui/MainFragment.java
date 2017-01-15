@@ -3,6 +3,7 @@ package com.shenhua.pc_controller.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,8 @@ import android.widget.Toast;
 import com.shenhua.pc_controller.App;
 import com.shenhua.pc_controller.R;
 import com.shenhua.pc_controller.base.BaseAlertDialog;
+import com.shenhua.pc_controller.core.SocketImpl;
 import com.shenhua.pc_controller.utils.SocketCallback;
-import com.shenhua.pc_controller.utils.SocketUtils;
 import com.shenhua.pc_controller.widget.SendMessageDialog;
 import com.shenhua.pc_controller.widget.SettingDialog;
 import com.shenhua.pc_controller.widget.TouchView;
@@ -76,19 +77,18 @@ public class MainFragment extends Fragment {
         mTouchView.setOnViewTouchListener(new TouchView.OnViewTouchListener() {
             @Override
             public void onMove(int dx, int dy) {
-//                port=119
-                //System.out.println("shenhua sout:---------->" + "横" + dx + "" + "纵" + dy);
-                SocketUtils.getInstance().communicate("横" + dx * 0.1 + "" + "纵" + dy * 0.1, 119, null);
+                SocketImpl.getInstance().moveCursor("横" + dx * 0.1 + "" + "纵" + dy * 0.1);
             }
 
             @Override
             public void onClick() {
-                SocketUtils.getInstance().communicate(ACTION_CLICK_LEFT, null);
+                SocketImpl.getInstance().communicate(ACTION_CLICK_LEFT);
             }
         });
         mTouchView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                // TODO: 1/15/2017 view 触摸过程中导致长按事件
                 //Vibrator vibrator = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
                 //vibrator.vibrate(80);
                 //SocketUtils.getInstance().communicate(ACTION_CLICK_RIGHT, null);
@@ -104,7 +104,7 @@ public class MainFragment extends Fragment {
                 final ProgressDialog dialog = new ProgressDialog(getContext());
                 dialog.setMessage("Loading");
                 dialog.show();
-                SocketUtils.getInstance().readImage(new SocketCallback() {
+                SocketImpl.getInstance().readImage(new SocketCallback() {
                     @Override
                     public void onSuccess(Object msg) {
                         dialog.dismiss();
@@ -118,14 +118,14 @@ public class MainFragment extends Fragment {
                         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
                 break;
             case R.id.btn_file:
                 ((MainActivity) getActivity()).showToast("功能未实现");
+                // TODO: 1/15/2017 发送bitmap图片
+                SocketImpl.getInstance().sendImage(BitmapFactory.decodeResource(getResources(), R.drawable.ic_send));
                 break;
             case R.id.btn_esc:
-
+                // TODO: 1/15/2017 模拟按下ESC键
                 break;
             case R.id.btn_send:
                 new SendMessageDialog(getActivity(), R.layout.bottomsheet_send_message).show();
@@ -137,19 +137,19 @@ public class MainFragment extends Fragment {
     void orientationClicks(View v) {
         switch (v.getId()) {
             case R.id.btn_up:
-                SocketUtils.getInstance().communicate(ACTION_UP, null);
+                SocketImpl.getInstance().communicate(ACTION_UP);
                 break;
             case R.id.btn_down:
-                SocketUtils.getInstance().communicate(ACTION_DOWN, null);
+                SocketImpl.getInstance().communicate(ACTION_DOWN);
                 break;
             case R.id.btn_left:
-                SocketUtils.getInstance().communicate(ACTION_LEFT, null);
+                SocketImpl.getInstance().communicate(ACTION_LEFT);
                 break;
             case R.id.btn_right:
-                SocketUtils.getInstance().communicate(ACTION_RIGHT, null);
+                SocketImpl.getInstance().communicate(ACTION_RIGHT);
                 break;
             case R.id.btn_enter:
-                SocketUtils.getInstance().communicate(ACTION_ENTER, null);
+                SocketImpl.getInstance().communicate(ACTION_ENTER);
                 break;
         }
     }
@@ -180,7 +180,7 @@ public class MainFragment extends Fragment {
                 new BaseAlertDialog(getContext(), "确定要锁定计算机吗？") {
                     @Override
                     public void onPositiveButtonClick() {
-                        SocketUtils.getInstance().communicate(SYSTEM_LOCK, null);
+                        SocketImpl.getInstance().communicate(SYSTEM_LOCK);
                     }
                 }.show();
                 break;
@@ -188,10 +188,11 @@ public class MainFragment extends Fragment {
                 new BaseAlertDialog(getContext(), "确定要关闭计算机吗？") {
                     @Override
                     public void onPositiveButtonClick() {
-                        SocketUtils.getInstance().communicate(SYSTEM_SHUTDOWN, new SocketCallback() {
+                        SocketImpl.getInstance().communicate(SYSTEM_SHUTDOWN, new SocketCallback() {
                             @Override
                             public void onSuccess(Object msg) {
-                                if (msg.toString().equals("already shutdown")) {
+                                String s = new String((byte[]) msg);
+                                if (s.equals("already shutdown")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -208,10 +209,11 @@ public class MainFragment extends Fragment {
                 new BaseAlertDialog(getContext(), "确定要重启计算机吗？") {
                     @Override
                     public void onPositiveButtonClick() {
-                        SocketUtils.getInstance().communicate(SYSTEM_RESTART, new SocketCallback() {
+                        SocketImpl.getInstance().communicate(SYSTEM_RESTART, new SocketCallback() {
                             @Override
                             public void onSuccess(Object msg) {
-                                if (msg.toString().equals("already restart")) {
+                                String s = new String((byte[]) msg);
+                                if (s.equals("already restart")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -228,10 +230,11 @@ public class MainFragment extends Fragment {
                 new BaseAlertDialog(getContext(), "确定要注销当前用户吗？") {
                     @Override
                     public void onPositiveButtonClick() {
-                        SocketUtils.getInstance().communicate(SYSTEM_LOGOUT, new SocketCallback() {
+                        SocketImpl.getInstance().communicate(SYSTEM_LOGOUT, new SocketCallback() {
                             @Override
                             public void onSuccess(Object msg) {
-                                if (msg.toString().equals("already logout")) {
+                                String s = new String((byte[]) msg);
+                                if (s.equals("already logout")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -248,10 +251,11 @@ public class MainFragment extends Fragment {
                 new BaseAlertDialog(getContext(), "确定要休眠计算机吗？") {
                     @Override
                     public void onPositiveButtonClick() {
-                        SocketUtils.getInstance().communicate(SYSTEM_SLEEP, new SocketCallback() {
+                        SocketImpl.getInstance().communicate(SYSTEM_SLEEP, new SocketCallback() {
                             @Override
                             public void onSuccess(Object msg) {
-                                if (msg.toString().equals("already sleep")) {
+                                String s = new String((byte[]) msg);
+                                if (s.equals("already sleep")) {
                                     ((MainActivity) getActivity()).replace(new SplashFragment());
                                 }
                             }
@@ -265,28 +269,27 @@ public class MainFragment extends Fragment {
                 }.show();
                 break;
             case R.id.system_menu_item_awake:
-                SocketUtils.getInstance().communicate(SYSTEM_AWAKE, null);
+                SocketImpl.getInstance().communicate(SYSTEM_AWAKE);
                 break;
             case R.id.system_menu_item_close_screen:
-                SocketUtils.getInstance().communicate(SYSTEM_CLOSE_SCREEN, null);
+                SocketImpl.getInstance().communicate(SYSTEM_CLOSE_SCREEN);
                 break;
             case R.id.system_menu_item_close_display:
-                SocketUtils.getInstance().communicate(SYSTEM_CLOSE_DISPLAY, null);
+                SocketImpl.getInstance().communicate(SYSTEM_CLOSE_DISPLAY);
                 break;
             case R.id.system_menu_item_screen_savers:
-                SocketUtils.getInstance().communicate(SYSTEM_SCREEN_SAVERS, null);
+                SocketImpl.getInstance().communicate(SYSTEM_SCREEN_SAVERS);
                 break;
             case R.id.system_menu_item_get_tasks:
                 getActivity().startActivity(new Intent(getActivity(), SystemTasksActivity.class));
                 break;
             case R.id.system_menu_item_dis_connect:
-                final App app = (App) getActivity().getApplication();
-                String host = app.getHost();
-                SocketUtils.getInstance().connect(host, 118, false, new SocketCallback() {
+                SocketImpl.getInstance().disConnect(new SocketCallback() {
                     @Override
                     public void onSuccess(Object msg) {
                         Toast.makeText(getActivity(), "已断开连接", Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).replace(new SplashFragment());
+                        App app = (App) getActivity().getApplication();
                         app.setConnect(false);
                     }
 

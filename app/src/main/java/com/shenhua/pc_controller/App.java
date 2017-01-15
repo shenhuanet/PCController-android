@@ -10,10 +10,16 @@ public class App extends Application {
 
     private String host;
     private boolean isConnect = false;
+    public static App instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+    }
+
+    public static App getInstance() {
+        return instance;
     }
 
     public String getHost() {

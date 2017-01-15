@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import com.shenhua.pc_controller.App;
 import com.shenhua.pc_controller.R;
 import com.shenhua.pc_controller.base.BaseActivity;
-import com.shenhua.pc_controller.utils.SocketUtils;
+import com.shenhua.pc_controller.core.SocketImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity {
 
         replace(new SplashFragment());
 //        replace(new MainFragment());
+
     }
 
     public void replace(Fragment fragment) {
@@ -46,7 +47,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         App app = (App) getApplication();
         if (app.isConnect())
-            SocketUtils.getInstance().connect(((App) getApplication()).getHost(), 118, false, null);
+            SocketImpl.getInstance().disConnect(null);
     }
 
     @Override

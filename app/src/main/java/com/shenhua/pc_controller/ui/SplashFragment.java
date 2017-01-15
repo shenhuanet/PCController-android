@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.shenhua.pc_controller.App;
 import com.shenhua.pc_controller.R;
+import com.shenhua.pc_controller.core.SocketImpl;
 import com.shenhua.pc_controller.utils.SocketCallback;
-import com.shenhua.pc_controller.utils.SocketUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,7 +83,7 @@ public class SplashFragment extends Fragment {
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("正在连接...");
         dialog.show();
-        SocketUtils.getInstance().connect(app.getHost(), 118, true, new SocketCallback() {
+        SocketImpl.getInstance().connect(new SocketCallback() {
             @Override
             public void onSuccess(Object msg) {
                 dialog.dismiss();

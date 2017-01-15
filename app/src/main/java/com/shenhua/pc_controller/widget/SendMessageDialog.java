@@ -10,8 +10,8 @@ import android.view.Window;
 
 import com.shenhua.pc_controller.R;
 import com.shenhua.pc_controller.base.BaseBottomSheetDialog;
+import com.shenhua.pc_controller.core.SocketImpl;
 import com.shenhua.pc_controller.utils.SocketCallback;
-import com.shenhua.pc_controller.utils.SocketUtils;
 
 import static com.shenhua.pc_controller.utils.StringUtils.EDIT_COPY;
 
@@ -35,11 +35,12 @@ public class SendMessageDialog extends BaseBottomSheetDialog implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_copy:
-                SocketUtils.getInstance().communicate(EDIT_COPY, new SocketCallback() {
+                SocketImpl.getInstance().communicate(EDIT_COPY, new SocketCallback() {
                     @Override
                     public void onSuccess(Object msg) {
+                        String s = new String((byte[]) msg);
                         ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(msg.toString());
+                        cm.setText(s);
                     }
 
                     @Override
@@ -49,6 +50,7 @@ public class SendMessageDialog extends BaseBottomSheetDialog implements View.OnC
                 });
                 break;
             case R.id.btn_paste:
+                // TODO: 1/15/2017 取出手机剪切板文字，发送至pc端，再粘贴
                 // SocketUtils.getInstance().communicate(EDIT_PASTE, null);
                 break;
         }

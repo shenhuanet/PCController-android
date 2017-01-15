@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.shenhua.pc_controller.R;
 import com.shenhua.pc_controller.base.BaseBottomSheetDialog;
+import com.shenhua.pc_controller.core.SocketImpl;
 import com.shenhua.pc_controller.utils.SocketCallback;
-import com.shenhua.pc_controller.utils.SocketUtils;
 
 import static com.shenhua.pc_controller.utils.StringUtils.SYSTEM_GET_VOLUME;
 import static com.shenhua.pc_controller.utils.StringUtils.SYSTEM_SET_VOLUME;
@@ -31,11 +31,12 @@ public class SettingDialog extends BaseBottomSheetDialog {
     protected void onBindContentView(Window window) {
         final AppCompatSeekBar seekBar = (AppCompatSeekBar) window.findViewById(R.id.seek_volume);
         final TextView volumeTv = (TextView) window.findViewById(R.id.tv_volume);
-        SocketUtils.getInstance().communicate(SYSTEM_GET_VOLUME, new SocketCallback() {
+        SocketImpl.getInstance().communicate(SYSTEM_GET_VOLUME, new SocketCallback() {
             @Override
             public void onSuccess(Object msg) {
-                seekBar.setProgress(Integer.valueOf(msg.toString()));
-                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), Integer.valueOf(msg.toString())));
+                String s = new String((byte[]) msg);
+                seekBar.setProgress(Integer.valueOf(s));
+                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), Integer.valueOf(s)));
             }
 
             @Override
@@ -48,8 +49,8 @@ public class SettingDialog extends BaseBottomSheetDialog {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                SocketUtils.getInstance().communicate(SYSTEM_SET_VOLUME + i, null);
-                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), Integer.valueOf(i)));
+                SocketImpl.getInstance().communicate(SYSTEM_SET_VOLUME + i, null);
+                volumeTv.setText(String.format(getContext().getResources().getString(R.string.string_volume), i));
             }
 
             @Override

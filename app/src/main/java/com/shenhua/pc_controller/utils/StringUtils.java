@@ -6,10 +6,11 @@ package com.shenhua.pc_controller.utils;
  */
 public class StringUtils {
 
-    public static final int PORT_NORMAL = 118;
-    public static final int PORT_MOUSE = 118;
-    public static final int PORT_GANYING = 118;
-    public static final int PORT_IMAGE = 118;
+    public static final int PORT_NORMAL = 116;// 普通
+    public static final int PORT_CURSOR = 117;// 光标
+    public static final int PORT_SENSOR = 118;// 传感器
+    public static final int PORT_IMAGE = 119;// 图片
+    public static final int PORT_FILE = 120;// 文件
 
     public static final String ACTION_CONNECT = "#request_connect#";
     public static final String ACTION_DIS_CONNECT = "#request_dis_connect#";
@@ -43,5 +44,7 @@ public class StringUtils {
 
     public static final String SYSTEM_GET_VOLUME = "#get_system_volume#";
     public static final String SYSTEM_SET_VOLUME = "#set_system_volume#";
+
+    public static final String READ_IMAGE = "#read_image#";
 
 }
