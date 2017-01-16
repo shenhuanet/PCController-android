@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pic_items">
+        <item>取出图片</item>
+        <item>发送图片</item>
+    </string-array>
+
+    <string-array name="picshow_items">
+        <item>分享图片</item>
+        <item>保存图片</item>
+    </string-array>
+
+</resources>

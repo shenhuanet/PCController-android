@@ -24,6 +24,7 @@ public class StringUtils {
     public static final String ACTION_RIGHT = "#right#";
     public static final String ACTION_ENTER = "#enter#";
     public static final String ACTION_CTRL_ENTER = "#ctrl_enter#";
+    public static final String ACTION_ESC = "#esc#";
 
     public static final String EDIT_MESSAGE = "#message#";
     public static final String EDIT_ALL = "#edit_all#";

@@ -1,12 +1,14 @@
 package com.shenhua.pc_controller.widget;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.shenhua.pc_controller.R;
 import com.shenhua.pc_controller.base.BaseBottomSheetDialog;
@@ -14,6 +16,7 @@ import com.shenhua.pc_controller.core.SocketImpl;
 import com.shenhua.pc_controller.utils.SocketCallback;
 
 import static com.shenhua.pc_controller.utils.StringUtils.EDIT_COPY;
+import static com.shenhua.pc_controller.utils.StringUtils.EDIT_PASTE;
 
 /**
  * Created by shenhua on 1/5/2017.
@@ -40,7 +43,7 @@ public class SendMessageDialog extends BaseBottomSheetDialog implements View.OnC
                     public void onSuccess(Object msg) {
                         String s = new String((byte[]) msg);
                         ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(s);
+                        cm.setPrimaryClip(ClipData.newPlainText(null, s));
                     }
 
                     @Override
@@ -51,7 +54,13 @@ public class SendMessageDialog extends BaseBottomSheetDialog implements View.OnC
                 break;
             case R.id.btn_paste:
                 // TODO: 1/15/2017 取出手机剪切板文字，发送至pc端，再粘贴
-                // SocketUtils.getInstance().communicate(EDIT_PASTE, null);
+                ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                if (clipboardManager.hasPrimaryClip()) {
+                    String str = clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+                    SocketImpl.getInstance().communicate(EDIT_PASTE + str, null);
+                } else {
+                    Toast.makeText(getContext(), "剪切板中没有内容", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

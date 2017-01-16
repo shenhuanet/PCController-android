@@ -1,12 +1,13 @@
 package com.shenhua.pc_controller.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ import butterknife.OnClick;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_CLICK_LEFT;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_DOWN;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_ENTER;
+import static com.shenhua.pc_controller.utils.StringUtils.ACTION_ESC;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_LEFT;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_RIGHT;
 import static com.shenhua.pc_controller.utils.StringUtils.ACTION_UP;
@@ -101,31 +103,50 @@ public class MainFragment extends Fragment {
     void clicks(View v) {
         switch (v.getId()) {
             case R.id.btn_copy:
-                final ProgressDialog dialog = new ProgressDialog(getContext());
-                dialog.setMessage("Loading");
-                dialog.show();
-                SocketImpl.getInstance().readImage(new SocketCallback() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setItems(getResources().getStringArray(R.array.pic_items), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSuccess(Object msg) {
-                        dialog.dismiss();
-                        Bitmap bitmap = (Bitmap) msg;
-                        imageView.setImageBitmap(bitmap);
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            getImage();
+                        } else if (i == 1) {
+                            setImage();
+                        }
                     }
 
-                    @Override
-                    public void onFailed(int errorCode, String msg) {
-                        dialog.dismiss();
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    // 发送图片
+                    private void setImage() {
+                        // TODO: 1/15/2017 从相册取出图片，转为bitmap图片发送 startActivityForResult
+                        // SocketImpl.getInstance().sendImage(BitmapFactory.decodeResource(getResources(), R.drawable.ic_send));
+                    }
+
+                    // 取出图片
+                    private void getImage() {
+                        final ProgressDialog dialog = new ProgressDialog(getContext());
+                        dialog.setMessage("图片加载中");
+                        dialog.show();
+                        SocketImpl.getInstance().readImage(new SocketCallback() {
+                            @Override
+                            public void onSuccess(Object msg) {
+                                dialog.dismiss();
+                                startActivity(new Intent(getActivity(), ShowPictureActivity.class)
+                                        .putExtra("img", (Bitmap) msg));
+                            }
+
+                            @Override
+                            public void onFailed(int errorCode, String msg) {
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
                 break;
             case R.id.btn_file:
-                ((MainActivity) getActivity()).showToast("功能未实现");
-                // TODO: 1/15/2017 发送bitmap图片
-                SocketImpl.getInstance().sendImage(BitmapFactory.decodeResource(getResources(), R.drawable.ic_send));
+                // TODO: 1/16/2017 打开和关闭FTP功能
                 break;
             case R.id.btn_esc:
-                // TODO: 1/15/2017 模拟按下ESC键
+                SocketImpl.getInstance().communicate(ACTION_ESC);
                 break;
             case R.id.btn_send:
                 new SendMessageDialog(getActivity(), R.layout.bottomsheet_send_message).show();
