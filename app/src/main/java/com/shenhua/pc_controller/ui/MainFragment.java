@@ -141,6 +141,7 @@ public class MainFragment extends Fragment {
                         });
                     }
                 });
+                builder.show();
                 break;
             case R.id.btn_file:
                 // TODO: 1/16/2017 打开和关闭FTP功能

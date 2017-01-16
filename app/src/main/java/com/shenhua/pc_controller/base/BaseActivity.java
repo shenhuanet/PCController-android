@@ -60,8 +60,13 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showToast(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    public void showToast(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BaseActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void hideKeyboard() {
