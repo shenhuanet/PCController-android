@@ -1,4 +1,4 @@
-# PC-Controller-android
+# PCController-android
 A scoket protocol based on the realization of the communication between android and pc app, to achieve the pc-side control.
 
 ## About Me
